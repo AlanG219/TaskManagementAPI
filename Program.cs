@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using TaskManagementAPI.Controllers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseInMemoryDatabase("TaskDb"));
+
+// Register the controller (TasksController)
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -19,6 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Map the weatherforecast endpoint (existing)
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -39,9 +45,13 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+// Map controllers (TasksController)
+app.MapControllers();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
