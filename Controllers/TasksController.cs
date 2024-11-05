@@ -1,3 +1,5 @@
+namespace TaskManagementAPI.Controllers
+{
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,4 +56,5 @@ public class TasksController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
+}
 }
